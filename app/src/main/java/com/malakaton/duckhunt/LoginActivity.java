@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.malakaton.duckhunt.common.Constantes;
+import com.malakaton.duckhunt.common.Constants;
 
 public class LoginActivity extends AppCompatActivity {
     EditText etNick;
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                      */
                     Intent i = new Intent(LoginActivity.this, GameActivity.class);
                     // Pasar parametros de un activity a otro (pantalla)
-                    i.putExtra(Constantes.EXTRA_NICK, nick);
+                    i.putExtra(Constants.EXTRA_NICK, nick);
                     startActivity(i);
                 }
             }
