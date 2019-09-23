@@ -1,9 +1,10 @@
-package com.malakaton.duckhunt;
+package com.malakaton.duckhunt.ui;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.malakaton.duckhunt.R;
 import com.malakaton.duckhunt.common.Constants;
 
 import java.util.Random;
@@ -26,11 +29,15 @@ public class GameActivity extends AppCompatActivity {
     int heightScreen;
     Random randomNumber;
     boolean gameOver = false;
+    String id, nick;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        db = FirebaseFirestore.getInstance();
         
         initViewComponents();
         events();
@@ -51,9 +58,10 @@ public class GameActivity extends AppCompatActivity {
         tvTimer.setTypeface(typeface);
         tvNick.setTypeface(typeface);
 
-        // Extras: obtener nick y setear en text view
+        // Extras: obtener id/nick y setear en text view
         Bundle extras = getIntent().getExtras();
-        String nick = extras.getString(Constants.EXTRA_NICK);
+        nick = extras.getString(Constants.EXTRA_NICK);
+        id = extras.getString(Constants.EXTRA_ID);
         tvNick.setText(nick);
     }
 
@@ -108,7 +116,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initCountDown() {
-        new CountDownTimer(6000, 1000) {
+        new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 long restSeconds = millisUntilFinished / 1000;
@@ -119,8 +127,17 @@ public class GameActivity extends AppCompatActivity {
                 tvTimer.setText("0s");
                 gameOver = true;
                 showGameOverDialog();
+                saveResultFireStore();
             }
         }.start();
+    }
+
+    private void saveResultFireStore() {
+        db.collection("users")
+                .document(id)
+                    .update(
+                            "ducks", counterDuck
+                    );
     }
 
     private void showGameOverDialog() {
@@ -139,10 +156,11 @@ public class GameActivity extends AppCompatActivity {
                 moveDuck();
             }
         });
-        builder.setNegativeButton("Salir", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Ver Ranking", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                finish();
+                Intent i = new Intent(GameActivity.this, RankingActivity.class);
+                startActivity(i);
             }
         });
 
