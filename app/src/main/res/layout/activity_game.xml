@@ -44,16 +44,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imageViewTimer"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView3"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTimer"
+        app:layout_constraintEnd_toStartOf="@+id/textViewTimer"
+        app:layout_constraintTop_toTopOf="@+id/textViewTimer"
         app:srcCompat="@drawable/ic_timer" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="60s"
