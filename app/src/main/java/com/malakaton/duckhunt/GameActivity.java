@@ -1,10 +1,13 @@
 package com.malakaton.duckhunt;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.Display;
 import android.view.View;
@@ -18,10 +21,11 @@ import java.util.Random;
 public class GameActivity extends AppCompatActivity {
     TextView tvCounterDucks, tvTimer, tvNick;
     ImageView ivDuck;
-    int counterDuck;
+    int counterDuck = 0;
     int widthScreen;
     int heightScreen;
     Random randomNumber;
+    boolean gameOver = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,8 @@ public class GameActivity extends AppCompatActivity {
         initViewComponents();
         events();
         initScreen();
+        moveDuck();
+        initCountDown();
     }
 
     private void initViewComponents() {
@@ -55,19 +61,21 @@ public class GameActivity extends AppCompatActivity {
         ivDuck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                counterDuck++;
-                tvCounterDucks.setText(String.valueOf(counterDuck));
-                ivDuck.setImageResource(R.drawable.duck_clicked);
+                if (!gameOver) {
+                    counterDuck++;
+                    tvCounterDucks.setText(String.valueOf(counterDuck));
+                    ivDuck.setImageResource(R.drawable.duck_clicked);
 
-                // Setea la imagen del pato cazado a pato normal despues de 0,5 segundos y despues
-                // aparece la imagen del pato en otra posicion del layout
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ivDuck.setImageResource(R.drawable.duck);
-                        moveDuck();
-                    }
-                }, 500);
+                    // Setea la imagen del pato cazado a pato normal despues de 0,5 segundos y despues
+                    // aparece la imagen del pato en otra posicion del layout
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ivDuck.setImageResource(R.drawable.duck);
+                            moveDuck();
+                        }
+                    }, 500);
+                }
             }
         });
     }
@@ -97,5 +105,49 @@ public class GameActivity extends AppCompatActivity {
 
         // Inicializamos el objeto para generar random numbers
         randomNumber = new Random();
+    }
+
+    private void initCountDown() {
+        new CountDownTimer(6000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                long restSeconds = millisUntilFinished / 1000;
+                tvTimer.setText(restSeconds + "s");
+            }
+
+            public void onFinish() {
+                tvTimer.setText("0s");
+                gameOver = true;
+                showGameOverDialog();
+            }
+        }.start();
+    }
+
+    private void showGameOverDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+
+        builder.setMessage("Has conseguido cazar " + counterDuck + " patos")
+                .setTitle("GAME OVER");
+
+        // añadir botones aceptar y cancelar
+        builder.setPositiveButton("Reiniciar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                counterDuck = 0;
+                tvCounterDucks.setText("0");
+                gameOver = false;
+                initCountDown();
+                moveDuck();
+            }
+        });
+        builder.setNegativeButton("Salir", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        // Mostrar el dialog
+        dialog.show();
     }
 }

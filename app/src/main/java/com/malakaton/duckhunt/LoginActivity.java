@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                      * Para lanzar el cambio de activity hay que llamar al metodo startActivity
                      *
                      */
+                    etNick.setText("");
                     Intent i = new Intent(LoginActivity.this, GameActivity.class);
                     // Pasar parametros de un activity a otro (pantalla)
                     i.putExtra(Constants.EXTRA_NICK, nick);
