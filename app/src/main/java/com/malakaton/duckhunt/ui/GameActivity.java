@@ -116,7 +116,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initCountDown() {
-        new CountDownTimer(60000, 1000) {
+        new CountDownTimer(6000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 long restSeconds = millisUntilFinished / 1000;

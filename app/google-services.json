@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "529593546618-7km7gabk6j319mduhpj4tr6nhev1pq20.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.malakaton.duckhunt",
+            "certificate_hash": "673679688015a10df27f957c2d1aaa1605ba3408"
+          }
+        },
+        {
           "client_id": "529593546618-mmub5o3ki9qd99l0teehciqi1qej11ht.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -14,8 +14,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.malakaton.duckhunt.R;
-import com.malakaton.duckhunt.common.Constants;
 import com.malakaton.duckhunt.models.User;
+import com.malakaton.duckhunt.common.Constants;
 
 public class LoginActivity extends AppCompatActivity {
     EditText etNick;
